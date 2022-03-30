@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!--pjax：防止跳转页面音乐暂停-->
+ <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
+ 
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="code-cPkiEKdYDa" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.thedreamfish.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="关于智能水箱嵌入式软件ADC模块的说明作者：薛荣坤 12位高精度ADC检测模块总体上嵌入式开发，通过STM32F103ZETX和   制作嵌入式系统，实现基于定时器中断下嵌套DMA通道的3个ADC，基于FMC通信下的屏幕显示，基于ESP8266的WIFI模组，基于USART1的串口通信等功能，为后续和硬件的搭配提供基础。 本文档主要用于说明ADC各个模块的配置方法，为之后产品细节开发提供帮助">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于智能水箱嵌入式开发软件部分的说明">
+<meta property="og:url" content="http://www.thedreamfish.cn/2022/01/19/stm32water/index.html">
+<meta property="og:site_name" content="小鱼的信箱">
+<meta property="og:description" content="关于智能水箱嵌入式软件ADC模块的说明作者：薛荣坤 12位高精度ADC检测模块总体上嵌入式开发，通过STM32F103ZETX和   制作嵌入式系统，实现基于定时器中断下嵌套DMA通道的3个ADC，基于FMC通信下的屏幕显示，基于ESP8266的WIFI模组，基于USART1的串口通信等功能，为后续和硬件的搭配提供基础。 本文档主要用于说明ADC各个模块的配置方法，为之后产品细节开发提供帮助">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119132631465.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119132911923.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119171647740.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119171906385.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119172725216.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119191932844.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119192014751.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119192231707.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119204400931.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119214943265.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119214959132.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119215016871.png">
+<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119215036440.png">
+<meta property="article:published_time" content="2022-01-19T05:18:11.000Z">
+<meta property="article:modified_time" content="2022-01-19T13:52:18.000Z">
+<meta property="article:author" content="爱做梦的小鱼">
+<meta property="article:tag" content="智能水箱">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.thedreamfish.cn/myimages/image-20220119132631465.png">
+
+<link rel="canonical" href="http://www.thedreamfish.cn/2022/01/19/stm32water/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>关于智能水箱嵌入式开发软件部分的说明 | 小鱼的信箱</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小鱼的信箱</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.thedreamfish.cn/2022/01/19/stm32water/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="爱做梦的小鱼">
+      <meta itemprop="description" content="世界如此美丽，我们一起欣赏世界">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小鱼的信箱">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于智能水箱嵌入式开发软件部分的说明
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-01-19 13:18:11 / 修改时间：21:52:18" itemprop="dateCreated datePublished" datetime="2022-01-19T13:18:11+08:00">2022-01-19</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="关于智能水箱嵌入式软件ADC模块的说明"><a href="#关于智能水箱嵌入式软件ADC模块的说明" class="headerlink" title="关于智能水箱嵌入式软件ADC模块的说明"></a>关于智能水箱嵌入式软件ADC模块的说明</h1><p>作者：薛荣坤</p>
+<h2 id="12位高精度ADC检测模块"><a href="#12位高精度ADC检测模块" class="headerlink" title="12位高精度ADC检测模块"></a>12位高精度ADC检测模块</h2><p>总体上嵌入式开发，通过STM32F103ZETX和   制作嵌入式系统，实现基于定时器中断下嵌套DMA通道的3个ADC，基于FMC通信下的屏幕显示，基于ESP8266的WIFI模组，基于USART1的串口通信等功能，为后续和硬件的搭配提供基础。</p>
+<p>本文档主要用于说明ADC各个模块的配置方法，为之后产品细节开发提供帮助</p>
+<span id="more"></span>
+<h3 id="ADC实现思路："><a href="#ADC实现思路：" class="headerlink" title="ADC实现思路："></a>ADC实现思路：</h3><p>我们首先需要了解STM32F103系列所拥有的三个高精度ADC，<img src="/myimages/image-20220119132631465.png" alt="image-20220119132631465" style="zoom:67%;"><img src="/myimages/image-20220119132911923.png" alt="image-20220119132911923" style="zoom:67%;"></p>
+<p>显然我们可以看到这里f~adc~工作频率是14MHZ，而系统时钟是72MHZ，显然需要把分频因子设置为6。因为我们后续还希望CPU在处理ADC时执行更多操作，显然不应该使用轮询，由于我们希望由定时器中断触发ADC的采样，然后DMA源源不断的将代码从ADC的寄存器移动到指定数组。</p>
+<hr>
+<h3 id="CUBEMX配置"><a href="#CUBEMX配置" class="headerlink" title="CUBEMX配置"></a>CUBEMX配置</h3><h4 id="ADC1和ADC3的配置"><a href="#ADC1和ADC3的配置" class="headerlink" title="ADC1和ADC3的配置"></a>ADC1和ADC3的配置</h4><h5 id="图形初始化"><a href="#图形初始化" class="headerlink" title="图形初始化"></a>图形初始化</h5><p><img src="/myimages/image-20220119171647740.png" style="zoom:67%;"><img src="/myimages/image-20220119171906385.png" alt="image-20220119171906385" style="zoom:67%;"></p>
+<p>以ADC3的配置举例，（ADC3的通道8，对应PF10)</p>
+<ul>
+<li>在ADC配置中需要修改 External Trigger Convision Source为定时器8触发，Sampling Time修改为7.5Cycles，Continuous Conversion Mode（连续转换）改为ENABLE。</li>
+<li>在DMA配置中，Data Width(数据宽)改为Half World. <em>Mode 改为循环，这至关重要，这使得DMA传送不会停止，笔者一开始默认了NORMAL，DEBug发现每次只传送一次，就结束了</em> ，方向改为Peripheral to Memory</li>
+</ul>
+<h5 id="TIMEer定时器界面"><a href="#TIMEer定时器界面" class="headerlink" title="TIMEer定时器界面"></a>TIMEer定时器界面</h5><p><img src="/myimages/image-20220119172725216.png" alt="image-20220119172725216" style="zoom:67%;"></p>
+<p>要想实现每0.x秒的精准采样，这一点是必不可少的，因为我们如果只使用DMA技术，ADC将不断以高频率采样，笔者发现这种速度太快且不可控，尤其在实际生产中，我们还需要协调3个ADC的关系，如果3个ADC都在同一个时刻采样，显然是可以很好的解决我们的问题。</p>
+<ul>
+<li>分频系数改为1999，Trigger Event Selection 改为自动更新，每次中断结束后，自己重新开始计数。</li>
+</ul>
+<hr>
+<h4 id="ADC2的配置"><a href="#ADC2的配置" class="headerlink" title="ADC2的配置"></a>ADC2的配置</h4><h5 id="图形化初始化"><a href="#图形化初始化" class="headerlink" title="图形化初始化"></a>图形化初始化</h5><p><img src="/myimages/image-20220119191932844.png" alt="image-20220119191932844" style="zoom:67%;"></p>
+<p>因为ADC2没有DMA系统，所以我们需要使用单独的Timer3来产生中断，这里我们用一个小技巧。我们如果直接设置ADC2由TIMER3触发，发生很奇怪的现象，始终没有中断写入。不如直接使用软件中断触发，然后写两个中断回调函数来判断，这么做本质原因就是调用HAL库之后，程序员部分失去了底层的控制。</p>
+<ul>
+<li>Continuous Conversion Mode :改为Disabled</li>
+<li>Samping Time (因为没有DMA，我们丧失了快速反应能力，不如直接增加Samping Time) :41.5 Cycles</li>
+</ul>
+<h5 id="Timer定时器界面"><a href="#Timer定时器界面" class="headerlink" title="Timer定时器界面"></a>Timer定时器界面</h5><p><img src="/myimages/image-20220119192014751.png" alt="image-20220119192014751" style="zoom:67%;"><img src="/myimages/image-20220119192231707.png" alt="image-20220119192231707" style="zoom:67%;"></p>
+<ul>
+<li>TIMER3的初始设置和TIMER8一样</li>
+</ul>
+<h5 id="中断初始化"><a href="#中断初始化" class="headerlink" title="中断初始化"></a>中断初始化</h5><p><img src="/myimages/image-20220119204400931.png" alt="image-20220119204400931"></p>
+<ul>
+<li><p>中断初始化只需要将值（0，0）赋值给（Preemption Priority, Sub Pority）</p>
+</li>
+<li><p>确实没有必要给ADC太高的优先级，因为我们ADC采样是不断进行的，我们应该注意串口的优先级，串口再发送数据时，发送WIFI串口优先级&gt;&gt;发送Debug优先级&gt;&gt;ADC. <em>个人觉得打断串口的中断是一种疯狂的行为，曾经这个错误把我折腾了一下午，甚至无法靠调试得到结果</em></p>
+</li>
+</ul>
+<hr>
+<h3 id="代码源码"><a href="#代码源码" class="headerlink" title="代码源码"></a>代码源码</h3><h4 id="ADC-c-与ADC-h"><a href="#ADC-c-与ADC-h" class="headerlink" title="ADC.c 与ADC.h"></a>ADC.c 与ADC.h</h4><p><em>代码主体由CUBEMX组成，我们需要理解后，对指定部分进行更改，我们在后面进行了详细注释，尤其是修改部分</em></p>
+<p>（ADC1 ADC3）（ ADC2）分别有两种配置方式</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Header */</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  ******************************************************************************</span></span><br><span class="line"><span class="comment">  * @file    adc.c</span></span><br><span class="line"><span class="comment">  * @brief   This file provides code for the configuration</span></span><br><span class="line"><span class="comment">  *          of the ADC instances.</span></span><br><span class="line"><span class="comment">  ******************************************************************************</span></span><br><span class="line"><span class="comment">  * @attention</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * Copyright (c) 2022 STMicroelectronics.</span></span><br><span class="line"><span class="comment">  * All rights reserved.</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * This software is licensed under terms that can be found in the LICENSE file</span></span><br><span class="line"><span class="comment">  * in the root directory of this software component.</span></span><br><span class="line"><span class="comment">  * If no LICENSE file comes with this software, it is provided AS-IS.</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  ******************************************************************************</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="comment">/* USER CODE END Header */</span></span><br><span class="line"><span class="comment">/* Includes ------------------------------------------------------------------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;adc.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE BEGIN 0 */</span></span><br><span class="line">__IO <span class="type">uint16_t</span> ADC_ConvertedValue1;</span><br><span class="line">__IO <span class="type">uint16_t</span> ADC_ConvertedValue2;</span><br><span class="line">__IO <span class="type">uint16_t</span> ADC_ConvertedValue3;</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;tim.h&quot;</span></span></span><br><span class="line"><span class="comment">/* USER CODE END 0 */</span></span><br><span class="line"></span><br><span class="line">ADC_HandleTypeDef hadc1;</span><br><span class="line">ADC_HandleTypeDef hadc2;</span><br><span class="line">ADC_HandleTypeDef hadc3;</span><br><span class="line">DMA_HandleTypeDef hdma_adc1;</span><br><span class="line">DMA_HandleTypeDef hdma_adc3;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* ADC1 init function */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">MX_ADC1_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC1_Init 0 */</span></span><br><span class="line">	__HAL_RCC_DMA1_CLK_ENABLE();</span><br><span class="line">  <span class="comment">/* USER CODE END ADC1_Init 0 */</span></span><br><span class="line"></span><br><span class="line">  ADC_ChannelConfTypeDef sConfig = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC1_Init 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC1_Init 1 */</span></span><br><span class="line">  <span class="comment">/** Common config</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  hadc1.Instance = ADC1;</span><br><span class="line">  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;</span><br><span class="line">  hadc1.Init.ContinuousConvMode = ENABLE;</span><br><span class="line">  hadc1.Init.DiscontinuousConvMode = DISABLE;</span><br><span class="line">  hadc1.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T8_TRGO;</span><br><span class="line">  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;</span><br><span class="line">  hadc1.Init.NbrOfConversion = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (HAL_ADC_Init(&amp;hadc1) != HAL_OK)</span><br><span class="line">  &#123;</span><br><span class="line">    Error_Handler();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/** Enable or disable the remapping of ADC1_ETRGREG:</span></span><br><span class="line"><span class="comment">  * ADC1 External Event regular conversion is connected to TIM8 TRG0</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  __HAL_AFIO_REMAP_ADC1_ETRGREG_ENABLE();</span><br><span class="line">  <span class="comment">/** Configure Regular Channel</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  sConfig.Channel = ADC_CHANNEL_4;</span><br><span class="line">  sConfig.Rank = ADC_REGULAR_RANK_1;</span><br><span class="line">  sConfig.SamplingTime = ADC_SAMPLETIME_7CYCLES_5;</span><br><span class="line">  <span class="keyword">if</span> (HAL_ADC_ConfigChannel(&amp;hadc1, &amp;sConfig) != HAL_OK)</span><br><span class="line">  &#123;</span><br><span class="line">    Error_Handler();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC1_Init 2 */</span></span><br><span class="line">	<span class="comment">//HAL_ADC_Start_DMA(&amp;hadc1, (uint32_t*)&amp;ADC_ConvertedValue1, 1);</span></span><br><span class="line">  <span class="comment">/* USER CODE END ADC1_Init 2 */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* ADC2 init function */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">MX_ADC2_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC2_Init 0 */</span></span><br><span class="line">  <span class="comment">/* USER CODE END ADC2_Init 0 */</span></span><br><span class="line"></span><br><span class="line">  ADC_ChannelConfTypeDef sConfig = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC2_Init 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC2_Init 1 */</span></span><br><span class="line">  <span class="comment">/** Common config</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  hadc2.Instance = ADC2;</span><br><span class="line">  hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;</span><br><span class="line">  hadc2.Init.ContinuousConvMode = DISABLE;</span><br><span class="line">  hadc2.Init.DiscontinuousConvMode = DISABLE;</span><br><span class="line">  hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;</span><br><span class="line">  hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;</span><br><span class="line">  hadc2.Init.NbrOfConversion = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (HAL_ADC_Init(&amp;hadc2) != HAL_OK)</span><br><span class="line">  &#123;</span><br><span class="line">    Error_Handler();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/** Configure Regular Channel</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  sConfig.Channel = ADC_CHANNEL_2;</span><br><span class="line">  sConfig.Rank = ADC_REGULAR_RANK_1;</span><br><span class="line">  sConfig.SamplingTime = ADC_SAMPLETIME_41CYCLES_5;</span><br><span class="line">  <span class="keyword">if</span> (HAL_ADC_ConfigChannel(&amp;hadc2, &amp;sConfig) != HAL_OK)</span><br><span class="line">  &#123;</span><br><span class="line">    Error_Handler();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC2_Init 2 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC2_Init 2 */</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* ADC3 init function */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">MX_ADC3_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC3_Init 0 */</span></span><br><span class="line">	__HAL_RCC_DMA2_CLK_ENABLE();</span><br><span class="line">  <span class="comment">/* USER CODE END ADC3_Init 0 */</span></span><br><span class="line"></span><br><span class="line">  ADC_ChannelConfTypeDef sConfig = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC3_Init 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC3_Init 1 */</span></span><br><span class="line">  <span class="comment">/** Common config</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  hadc3.Instance = ADC3;</span><br><span class="line">  hadc3.Init.ScanConvMode = ADC_SCAN_DISABLE;</span><br><span class="line">  hadc3.Init.ContinuousConvMode = ENABLE;</span><br><span class="line">  hadc3.Init.DiscontinuousConvMode = DISABLE;</span><br><span class="line">  hadc3.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T8_TRGO;</span><br><span class="line">  hadc3.Init.DataAlign = ADC_DATAALIGN_RIGHT;</span><br><span class="line">  hadc3.Init.NbrOfConversion = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (HAL_ADC_Init(&amp;hadc3) != HAL_OK)</span><br><span class="line">  &#123;</span><br><span class="line">    Error_Handler();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/** Configure Regular Channel</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  sConfig.Channel = ADC_CHANNEL_8;</span><br><span class="line">  sConfig.Rank = ADC_REGULAR_RANK_1;</span><br><span class="line">  sConfig.SamplingTime = ADC_SAMPLETIME_7CYCLES_5;</span><br><span class="line">  <span class="keyword">if</span> (HAL_ADC_ConfigChannel(&amp;hadc3, &amp;sConfig) != HAL_OK)</span><br><span class="line">  &#123;</span><br><span class="line">    Error_Handler();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC3_Init 2 */</span></span><br><span class="line">	<span class="comment">//HAL_ADC_Start_DMA(&amp;hadc3, (uint32_t*)&amp;ADC_ConvertedValue3, 1);</span></span><br><span class="line">  <span class="comment">/* USER CODE END ADC3_Init 2 */</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">HAL_ADC_MspInit</span><span class="params">(ADC_HandleTypeDef* adcHandle)</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  GPIO_InitTypeDef GPIO_InitStruct = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">  <span class="keyword">if</span>(adcHandle-&gt;Instance==ADC1)</span><br><span class="line">  &#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC1_MspInit 0 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC1_MspInit 0 */</span></span><br><span class="line">    <span class="comment">/* ADC1 clock enable */</span></span><br><span class="line">    __HAL_RCC_ADC1_CLK_ENABLE();</span><br><span class="line"></span><br><span class="line">    __HAL_RCC_GPIOA_CLK_ENABLE();</span><br><span class="line">    <span class="comment">/**ADC1 GPIO Configuration</span></span><br><span class="line"><span class="comment">    PA4     ------&gt; ADC1_IN4</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    GPIO_InitStruct.Pin = GPIO_PIN_4;</span><br><span class="line">    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;</span><br><span class="line">    HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* ADC1 DMA Init */</span></span><br><span class="line">    <span class="comment">/* ADC1 Init */</span></span><br><span class="line">    hdma_adc1.Instance = DMA1_Channel1;</span><br><span class="line">    hdma_adc1.Init.Direction = DMA_PERIPH_TO_MEMORY;</span><br><span class="line">    hdma_adc1.Init.PeriphInc = DMA_PINC_DISABLE;</span><br><span class="line">    hdma_adc1.Init.MemInc = DMA_MINC_ENABLE;</span><br><span class="line">    hdma_adc1.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;</span><br><span class="line">    hdma_adc1.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;</span><br><span class="line">    hdma_adc1.Init.Mode = DMA_CIRCULAR;</span><br><span class="line">    hdma_adc1.Init.Priority = DMA_PRIORITY_MEDIUM;</span><br><span class="line">    <span class="keyword">if</span> (HAL_DMA_Init(&amp;hdma_adc1) != HAL_OK)</span><br><span class="line">    &#123;</span><br><span class="line">      Error_Handler();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    __HAL_LINKDMA(adcHandle,DMA_Handle,hdma_adc1);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* ADC1 interrupt Init */</span></span><br><span class="line">    HAL_NVIC_SetPriority(ADC1_2_IRQn, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    HAL_NVIC_EnableIRQ(ADC1_2_IRQn);</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC1_MspInit 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC1_MspInit 1 */</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span>(adcHandle-&gt;Instance==ADC2)</span><br><span class="line">  &#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC2_MspInit 0 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC2_MspInit 0 */</span></span><br><span class="line">    <span class="comment">/* ADC2 clock enable */</span></span><br><span class="line">    __HAL_RCC_ADC2_CLK_ENABLE();</span><br><span class="line"></span><br><span class="line">    __HAL_RCC_GPIOC_CLK_ENABLE();</span><br><span class="line">    __HAL_RCC_GPIOA_CLK_ENABLE();</span><br><span class="line">    <span class="comment">/**ADC2 GPIO Configuration</span></span><br><span class="line"><span class="comment">    PC2     ------&gt; ADC2_IN12</span></span><br><span class="line"><span class="comment">    PA2     ------&gt; ADC2_IN2</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    GPIO_InitStruct.Pin = GPIO_PIN_2;</span><br><span class="line">    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;</span><br><span class="line">    HAL_GPIO_Init(GPIOC, &amp;GPIO_InitStruct);</span><br><span class="line"></span><br><span class="line">    GPIO_InitStruct.Pin = GPIO_PIN_2;</span><br><span class="line">    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;</span><br><span class="line">    HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* ADC2 interrupt Init */</span></span><br><span class="line">    HAL_NVIC_SetPriority(ADC1_2_IRQn, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    HAL_NVIC_EnableIRQ(ADC1_2_IRQn);</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC2_MspInit 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC2_MspInit 1 */</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span>(adcHandle-&gt;Instance==ADC3)</span><br><span class="line">  &#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC3_MspInit 0 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC3_MspInit 0 */</span></span><br><span class="line">    <span class="comment">/* ADC3 clock enable */</span></span><br><span class="line">    __HAL_RCC_ADC3_CLK_ENABLE();</span><br><span class="line"></span><br><span class="line">    __HAL_RCC_GPIOF_CLK_ENABLE();</span><br><span class="line">    <span class="comment">/**ADC3 GPIO Configuration</span></span><br><span class="line"><span class="comment">    PF10     ------&gt; ADC3_IN8</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    GPIO_InitStruct.Pin = GPIO_PIN_10;</span><br><span class="line">    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;</span><br><span class="line">    HAL_GPIO_Init(GPIOF, &amp;GPIO_InitStruct);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* ADC3 DMA Init */</span></span><br><span class="line">    <span class="comment">/* ADC3 Init */</span></span><br><span class="line">    hdma_adc3.Instance = DMA2_Channel5;</span><br><span class="line">    hdma_adc3.Init.Direction = DMA_PERIPH_TO_MEMORY;</span><br><span class="line">    hdma_adc3.Init.PeriphInc = DMA_PINC_DISABLE;</span><br><span class="line">    hdma_adc3.Init.MemInc = DMA_MINC_ENABLE;</span><br><span class="line">    hdma_adc3.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;</span><br><span class="line">    hdma_adc3.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;</span><br><span class="line">    hdma_adc3.Init.Mode = DMA_CIRCULAR;</span><br><span class="line">    hdma_adc3.Init.Priority = DMA_PRIORITY_MEDIUM;</span><br><span class="line">    <span class="keyword">if</span> (HAL_DMA_Init(&amp;hdma_adc3) != HAL_OK)</span><br><span class="line">    &#123;</span><br><span class="line">      Error_Handler();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    __HAL_LINKDMA(adcHandle,DMA_Handle,hdma_adc3);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC3_MspInit 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC3_MspInit 1 */</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">HAL_ADC_MspDeInit</span><span class="params">(ADC_HandleTypeDef* adcHandle)</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(adcHandle-&gt;Instance==ADC1)</span><br><span class="line">  &#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC1_MspDeInit 0 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC1_MspDeInit 0 */</span></span><br><span class="line">    <span class="comment">/* Peripheral clock disable */</span></span><br><span class="line">    __HAL_RCC_ADC1_CLK_DISABLE();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**ADC1 GPIO Configuration</span></span><br><span class="line"><span class="comment">    PA4     ------&gt; ADC1_IN4</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_4);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* ADC1 DMA DeInit */</span></span><br><span class="line">    HAL_DMA_DeInit(adcHandle-&gt;DMA_Handle);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* ADC1 interrupt Deinit */</span></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC1:ADC1_2_IRQn disable */</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Uncomment the line below to disable the &quot;ADC1_2_IRQn&quot; interrupt</span></span><br><span class="line"><span class="comment">    * Be aware, disabling shared interrupt may affect other IPs</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="comment">/* HAL_NVIC_DisableIRQ(ADC1_2_IRQn); */</span></span><br><span class="line">  <span class="comment">/* USER CODE END ADC1:ADC1_2_IRQn disable */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC1_MspDeInit 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC1_MspDeInit 1 */</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span>(adcHandle-&gt;Instance==ADC2)</span><br><span class="line">  &#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC2_MspDeInit 0 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC2_MspDeInit 0 */</span></span><br><span class="line">    <span class="comment">/* Peripheral clock disable */</span></span><br><span class="line">    __HAL_RCC_ADC2_CLK_DISABLE();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**ADC2 GPIO Configuration</span></span><br><span class="line"><span class="comment">    PC2     ------&gt; ADC2_IN12</span></span><br><span class="line"><span class="comment">    PA2     ------&gt; ADC2_IN2</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_2);</span><br><span class="line"></span><br><span class="line">    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* ADC2 interrupt Deinit */</span></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC2:ADC1_2_IRQn disable */</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Uncomment the line below to disable the &quot;ADC1_2_IRQn&quot; interrupt</span></span><br><span class="line"><span class="comment">    * Be aware, disabling shared interrupt may affect other IPs</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="comment">/* HAL_NVIC_DisableIRQ(ADC1_2_IRQn); */</span></span><br><span class="line">  <span class="comment">/* USER CODE END ADC2:ADC1_2_IRQn disable */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC2_MspDeInit 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC2_MspDeInit 1 */</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span>(adcHandle-&gt;Instance==ADC3)</span><br><span class="line">  &#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC3_MspDeInit 0 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC3_MspDeInit 0 */</span></span><br><span class="line">    <span class="comment">/* Peripheral clock disable */</span></span><br><span class="line">    __HAL_RCC_ADC3_CLK_DISABLE();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**ADC3 GPIO Configuration</span></span><br><span class="line"><span class="comment">    PF10     ------&gt; ADC3_IN8</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    HAL_GPIO_DeInit(GPIOF, GPIO_PIN_10);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* ADC3 DMA DeInit */</span></span><br><span class="line">    HAL_DMA_DeInit(adcHandle-&gt;DMA_Handle);</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC3_MspDeInit 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END ADC3_MspDeInit 1 */</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE BEGIN 1 */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">HAL_TIM_PeriodElapsedCallback</span><span class="params">(TIM_HandleTypeDef *htim)</span>    <span class="comment">//定时器中断回调</span></span><br><span class="line">&#123;</span><br><span class="line">    HAL_ADC_Start_IT(&amp;hadc2); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">HAL_ADC_ConvCpltCallback</span><span class="params">(ADC_HandleTypeDef* AdcHandle)</span>&#123;</span><br><span class="line">		HAL_ADC_Stop_IT(&amp;hadc2);    </span><br><span class="line">    HAL_TIM_Base_Stop_IT(&amp;htim3);</span><br><span class="line">		ADC_ConvertedValue2=HAL_ADC_GetValue(&amp;hadc2);</span><br><span class="line">    HAL_TIM_Base_Start_IT(&amp;htim3); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END 1 */</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">/* USER CODE BEGIN Header */</span><br><span class="line">/**</span><br><span class="line">  ******************************************************************************</span><br><span class="line">  * @file    adc.h</span><br><span class="line">  * @brief   This file contains all the function prototypes for</span><br><span class="line">  *          the adc.c file</span><br><span class="line">  ******************************************************************************</span><br><span class="line">  * @attention</span><br><span class="line">  *</span><br><span class="line">  * Copyright (c) 2022 STMicroelectronics.</span><br><span class="line">  * All rights reserved.</span><br><span class="line">  *</span><br><span class="line">  * This software is licensed under terms that can be found in the LICENSE file</span><br><span class="line">  * in the root directory of this software component.</span><br><span class="line">  * If no LICENSE file comes with this software, it is provided AS-IS.</span><br><span class="line">  *</span><br><span class="line">  ******************************************************************************</span><br><span class="line">  */</span><br><span class="line">/* USER CODE END Header */</span><br><span class="line">/* Define to prevent recursive inclusion -------------------------------------*/</span><br><span class="line">#ifndef __ADC_H__</span><br><span class="line">#define __ADC_H__</span><br><span class="line"></span><br><span class="line">#ifdef __cplusplus</span><br><span class="line">extern &quot;C&quot; &#123;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">/* Includes ------------------------------------------------------------------*/</span><br><span class="line">#include &quot;main.h&quot;</span><br><span class="line"></span><br><span class="line">/* USER CODE BEGIN Includes */</span><br><span class="line"></span><br><span class="line">/* USER CODE END Includes */</span><br><span class="line"></span><br><span class="line">extern ADC_HandleTypeDef hadc1;</span><br><span class="line">extern ADC_HandleTypeDef hadc2;</span><br><span class="line">extern ADC_HandleTypeDef hadc3;</span><br><span class="line"></span><br><span class="line">/* USER CODE BEGIN Private defines */</span><br><span class="line">// ADC1转换的电压值通过DMA方式传到SRAM</span><br><span class="line">extern __IO uint16_t ADC_ConvertedValue1;</span><br><span class="line">extern __IO uint16_t ADC_ConvertedValue2;</span><br><span class="line">extern __IO uint16_t ADC_ConvertedValue3;</span><br><span class="line">/* USER CODE END Private defines */</span><br><span class="line"></span><br><span class="line">void MX_ADC1_Init(void);</span><br><span class="line">void MX_ADC2_Init(void);</span><br><span class="line">void MX_ADC3_Init(void);</span><br><span class="line"></span><br><span class="line">/* USER CODE BEGIN Prototypes */</span><br><span class="line"></span><br><span class="line">/* USER CODE END Prototypes */</span><br><span class="line"></span><br><span class="line">#ifdef __cplusplus</span><br><span class="line">&#125;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#endif /* __ADC_H__ */</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="ADC3中断函数的说明"><a href="#ADC3中断函数的说明" class="headerlink" title="ADC3中断函数的说明"></a>ADC3中断函数的说明</h5><p>这里注意，一定要在中断里面关闭时钟，然后处理完再打开，这是一个好习惯，因为谁都不知道会在里面处理多久，如果不关闭，下一次中断来临，可能会造成程序异常。<em>血的教训</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">HAL_TIM_PeriodElapsedCallback</span><span class="params">(TIM_HandleTypeDef *htim)</span>    <span class="comment">//定时器中断回调</span></span><br><span class="line">&#123;</span><br><span class="line">    HAL_ADC_Start_IT(&amp;hadc2); <span class="comment">//定时器中断里面开启ADC中断转换，1ms开启一次采集    </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">HAL_ADC_ConvCpltCallback</span><span class="params">(ADC_HandleTypeDef* AdcHandle)</span>&#123;</span><br><span class="line">		HAL_ADC_Stop_IT(&amp;hadc2);    <span class="comment">//关闭adc2</span></span><br><span class="line">    HAL_TIM_Base_Stop_IT(&amp;htim3);	<span class="comment">//关闭时钟Timer2</span></span><br><span class="line">		ADC_ConvertedValue2=HAL_ADC_GetValue(&amp;hadc2);<span class="comment">//传递值</span></span><br><span class="line">    HAL_TIM_Base_Start_IT(&amp;htim3);  <span class="comment">//打开时钟Timer2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="ADC1-2初始化时的说明"><a href="#ADC1-2初始化时的说明" class="headerlink" title="ADC1,2初始化时的说明"></a>ADC1,2初始化时的说明</h5><p>为了使用DMA传输，我们需要在第一句使能DMA时钟，但是注意我们不用HAL库生成的DMA_init,其存在一定的时间逻辑混乱。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">MX_ADC1_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC1_Init 0 */</span></span><br><span class="line">	__HAL_RCC_DMA1_CLK_ENABLE();</span><br><span class="line">  <span class="comment">/* USER CODE END ADC1_Init 0 */</span></span><br><span class="line"></span><br><span class="line">  ADC_ChannelConfTypeDef sConfig = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">  ...</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  <span class="type">void</span> <span class="title function_">MX_ADC3_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC3_Init 0 */</span></span><br><span class="line">	__HAL_RCC_DMA2_CLK_ENABLE();</span><br><span class="line">  <span class="comment">/* USER CODE END ADC3_Init 0 */</span></span><br><span class="line"></span><br><span class="line">  ADC_ChannelConfTypeDef sConfig = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC3_Init 1 */</span></span><br><span class="line">  ...&#125;</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+<h4 id="MAIN-C-（ADC代码使用部分）"><a href="#MAIN-C-（ADC代码使用部分）" class="headerlink" title="MAIN.C （ADC代码使用部分）"></a>MAIN.C （ADC代码使用部分）</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main函数变量</span></span><br><span class="line"><span class="comment">// ADC1转换的电压值通过DMA方式传到SRAM</span></span><br><span class="line"><span class="comment">//这部分代码，后面将移动到ADC.H</span></span><br><span class="line"><span class="keyword">extern</span> __IO <span class="type">uint16_t</span> ADC_ConvertedValue1;</span><br><span class="line"><span class="keyword">extern</span> __IO <span class="type">uint16_t</span> ADC_ConvertedValue2;</span><br><span class="line"><span class="keyword">extern</span> __IO <span class="type">uint16_t</span> ADC_ConvertedValue3;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 局部变量，用于保存转换计算后的电压值 	 </span></span><br><span class="line"><span class="type">float</span> ADC_Vol; </span><br><span class="line"><span class="type">float</span> ADC_Vol2;</span><br><span class="line"><span class="type">float</span> ADC_Vol3;</span><br><span class="line"></span><br><span class="line"><span class="comment">//时钟出花</span></span><br><span class="line">HAL_ADC_Start_IT(&amp;hadc2);    <span class="comment">//使能hadc2的中断</span></span><br><span class="line">HAL_TIM_Base_Start(&amp;htim3);  <span class="comment">//使能TIM3的时钟</span></span><br><span class="line">HAL_TIM_Base_Start(&amp;htim8);     <span class="comment">//使能TIM8的时钟</span></span><br><span class="line">HAL_TIM_Base_Stop_IT(&amp;htim3);    <span class="comment">//关闭ADC2采样</span></span><br><span class="line">HAL_TIM_Base_Stop_IT(&amp;htim8);	<span class="comment">//关闭ADC3采样</span></span><br><span class="line">HAL_ADC_Start_DMA(&amp;hadc1, (<span class="type">uint32_t</span>*)&amp;ADC_ConvertedValue1, <span class="number">1</span>);</span><br><span class="line">HAL_ADC_Start_DMA(&amp;hadc3, (<span class="type">uint32_t</span>*)&amp;ADC_ConvertedValue3, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">	<span class="comment">// 读取转换的AD值</span></span><br><span class="line">	HAL_TIM_Base_Start_IT(&amp;htim8);   <span class="comment">//打开ADC2采样</span></span><br><span class="line">	HAL_TIM_Base_Start_IT(&amp;htim3);   <span class="comment">//打开ADC1,ADC3采样</span></span><br><span class="line">	ADC_Vol =(<span class="type">float</span>) ADC_ConvertedValue1/<span class="number">4096</span>*(<span class="type">float</span>)<span class="number">3.3</span>;<span class="comment">// 读取转换的AD1值</span></span><br><span class="line">	ADC_Vol2 =(<span class="type">float</span>) ADC_ConvertedValue2/<span class="number">4096</span>*(<span class="type">float</span>)<span class="number">3.3</span>;<span class="comment">// 读取转换的AD2值	</span></span><br><span class="line">	ADC_Vol3 =(<span class="type">float</span>) ADC_ConvertedValue3/<span class="number">4096</span>*(<span class="type">float</span>)<span class="number">3.3</span>;<span class="comment">// 读取转换的AD3值</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\r\n The current AD value = 0x%04X \r\n&quot;</span>, ADC_ConvertedValue2); </span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\r\n The current AD value = %f V \r\n&quot;</span>,ADC_Vol2);   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><h4 id="ADC1"><a href="#ADC1" class="headerlink" title="ADC1"></a>ADC1</h4><p><img src="/myimages/image-20220119214943265.png" alt="image-20220119214943265"></p>
+<h4 id="ADC2"><a href="#ADC2" class="headerlink" title="ADC2"></a>ADC2</h4><p><img src="/myimages/image-20220119214959132.png" alt="image-20220119214959132"></p>
+<h4 id="ADC3"><a href="#ADC3" class="headerlink" title="ADC3"></a>ADC3</h4><p><img src="/myimages/image-20220119215016871.png" alt="image-20220119215016871"></p>
+<h4 id="测试结论"><a href="#测试结论" class="headerlink" title="测试结论"></a>测试结论</h4><p>精度12位，均为有效数字，ADC1，2，3均工作正常，精度符合项目要求，但是还需要极限测试。</p>
+<h3 id="硬件说明（ADC1-2-3通用）"><a href="#硬件说明（ADC1-2-3通用）" class="headerlink" title="硬件说明（ADC1,2,3通用）"></a>硬件说明（ADC1,2,3通用）</h3><h4 id="ADC对应端口"><a href="#ADC对应端口" class="headerlink" title="ADC对应端口"></a>ADC对应端口</h4><ul>
+<li>ADC1 -&gt;PA4</li>
+<li>ADC2-&gt;PA2</li>
+<li>ADC3-&gt;PF10   </li>
+</ul>
+<h4 id="ADC硬件连接"><a href="#ADC硬件连接" class="headerlink" title="ADC硬件连接"></a>ADC硬件连接</h4><p><em>由于ADC采样只能采集0-3.3v之间的电压，所以需要硬件设计中考虑对传感器的分压，建议采用2个贴片电阻将5V分压至3.3.v,请务必考虑ADC的输入电阻R~AIN~</em></p>
+<p><img src="/myimages/image-20220119215036440.png" alt="image-20220119215036440"></p>
+<p><em>本嵌入式，均采用T~s~=55.5</em></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>爱做梦的小鱼
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.thedreamfish.cn/2022/01/19/stm32water/" title="关于智能水箱嵌入式开发软件部分的说明">http://www.thedreamfish.cn/2022/01/19/stm32water/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%99%BA%E8%83%BD%E6%B0%B4%E7%AE%B1/" rel="tag"># 智能水箱</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/16/mythird/" rel="prev" title="数字滤波器设计1">
+      <i class="fa fa-chevron-left"></i> 数字滤波器设计1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/02/myidea/" rel="next" title="嵌入式系统分析">
+      嵌入式系统分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81NTIyMy8zMTY5MA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <!-- require APlayer -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <!-- require MetingJS-->
+    <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+    <!--网易云playlist外链地址-->   
+    <meting-js
+    server="tencent"
+    type="playlist" 
+    id="8318740249"
+    mini="false"
+    fixed="false"
+    list-folded="true"
+    autoplay="ture"
+    volume="0.4"
+    theme="#FADFA3"
+    order="list"
+    loop="all"
+    preload="auto"
+    mutex="true">
+    </meting-js>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%99%BA%E8%83%BD%E6%B0%B4%E7%AE%B1%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6ADC%E6%A8%A1%E5%9D%97%E7%9A%84%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">关于智能水箱嵌入式软件ADC模块的说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#12%E4%BD%8D%E9%AB%98%E7%B2%BE%E5%BA%A6ADC%E6%A3%80%E6%B5%8B%E6%A8%A1%E5%9D%97"><span class="nav-number">1.1.</span> <span class="nav-text">12位高精度ADC检测模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ADC%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">ADC实现思路：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CUBEMX%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.2.</span> <span class="nav-text">CUBEMX配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ADC1%E5%92%8CADC3%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">ADC1和ADC3的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.2.1.1.</span> <span class="nav-text">图形初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TIMEer%E5%AE%9A%E6%97%B6%E5%99%A8%E7%95%8C%E9%9D%A2"><span class="nav-number">1.1.2.1.2.</span> <span class="nav-text">TIMEer定时器界面</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ADC2%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">ADC2的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E5%8C%96%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.2.2.1.</span> <span class="nav-text">图形化初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Timer%E5%AE%9A%E6%97%B6%E5%99%A8%E7%95%8C%E9%9D%A2"><span class="nav-number">1.1.2.2.2.</span> <span class="nav-text">Timer定时器界面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.2.2.3.</span> <span class="nav-text">中断初始化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%BA%90%E7%A0%81"><span class="nav-number">1.1.3.</span> <span class="nav-text">代码源码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ADC-c-%E4%B8%8EADC-h"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">ADC.c 与ADC.h</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ADC3%E4%B8%AD%E6%96%AD%E5%87%BD%E6%95%B0%E7%9A%84%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.3.1.1.</span> <span class="nav-text">ADC3中断函数的说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ADC1-2%E5%88%9D%E5%A7%8B%E5%8C%96%E6%97%B6%E7%9A%84%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.3.1.2.</span> <span class="nav-text">ADC1,2初始化时的说明</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MAIN-C-%EF%BC%88ADC%E4%BB%A3%E7%A0%81%E4%BD%BF%E7%94%A8%E9%83%A8%E5%88%86%EF%BC%89"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">MAIN.C （ADC代码使用部分）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="nav-number">1.1.4.</span> <span class="nav-text">测试结果</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ADC1"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">ADC1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ADC2"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">ADC2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ADC3"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">ADC3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E8%AE%BA"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">测试结论</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E8%AF%B4%E6%98%8E%EF%BC%88ADC1-2-3%E9%80%9A%E7%94%A8%EF%BC%89"><span class="nav-number">1.1.5.</span> <span class="nav-text">硬件说明（ADC1,2,3通用）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ADC%E5%AF%B9%E5%BA%94%E7%AB%AF%E5%8F%A3"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">ADC对应端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ADC%E7%A1%AC%E4%BB%B6%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">ADC硬件连接</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="爱做梦的小鱼"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">爱做梦的小鱼</p>
+  <div class="site-description" itemprop="description">世界如此美丽，我们一起欣赏世界</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2022-01 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">爱做梦的小鱼</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共8.9k字</span>
+</div>
+
+
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+    </div>
+</body>
+</html>
