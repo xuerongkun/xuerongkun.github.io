@@ -100,15 +100,6 @@
     <priority>0.6</priority>
   </url>
   
-  <url>
-    <loc>http://www.thedreamfish.cn/2022/01/15/mysecond/</loc>
-    
-    <lastmod>2022-01-15</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
 
   <url>
     <loc>http://www.thedreamfish.cn/</loc>
@@ -127,13 +118,6 @@
   
   <url>
     <loc>http://www.thedreamfish.cn/tags/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/</loc>
-    <lastmod>2022-03-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.thedreamfish.cn/tags/%E5%B5%8C%E5%85%A5%E8%AE%BE%E8%AE%A1/</loc>
     <lastmod>2022-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
