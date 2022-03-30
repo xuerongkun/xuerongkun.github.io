@@ -27,30 +27,33 @@
     var CONFIG = {"hostname":"www.thedreamfish.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="世界如此美丽，我们一起欣赏世界">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小鱼的信箱">
-<meta property="og:url" content="http://www.thedreamfish.cn/index.html">
+  <meta name="description" content="关于智能水箱嵌入式软件DAC模块的说明作者：薛荣坤 DAC模块DAC模块主要的作用就是用来驱动继电器，来实现对于电机的控制。代码相对简单，CUBEmx图形化设计软件生成代码可用，只用使能DAC，并填入寄存器即可。 CUBEMX配置 因为我们在程序中DAC可能控制的就是继电器，所以不需要采用定时器，中断，但是在电子设计大赛中，应当掌握如何使用DAC TIMER DMA输出可变频率的正弦波。 Outp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于智能水箱嵌入式软件DAC模块的说明">
+<meta property="og:url" content="http://www.thedreamfish.cn/2022/03/31/post/index.html">
 <meta property="og:site_name" content="小鱼的信箱">
-<meta property="og:description" content="世界如此美丽，我们一起欣赏世界">
+<meta property="og:description" content="关于智能水箱嵌入式软件DAC模块的说明作者：薛荣坤 DAC模块DAC模块主要的作用就是用来驱动继电器，来实现对于电机的控制。代码相对简单，CUBEmx图形化设计软件生成代码可用，只用使能DAC，并填入寄存器即可。 CUBEMX配置 因为我们在程序中DAC可能控制的就是继电器，所以不需要采用定时器，中断，但是在电子设计大赛中，应当掌握如何使用DAC TIMER DMA输出可变频率的正弦波。 Outp">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-30T22:52:51.000Z">
+<meta property="article:modified_time" content="2022-03-30T22:53:52.723Z">
 <meta property="article:author" content="爱做梦的小鱼">
+<meta property="article:tag" content="智能水箱">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://www.thedreamfish.cn/">
+<link rel="canonical" href="http://www.thedreamfish.cn/2022/03/31/post/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>小鱼的信箱</title>
+  <title>关于智能水箱嵌入式软件DAC模块的说明 | 小鱼的信箱</title>
   
 
 
@@ -163,9 +166,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -181,10 +185,9 @@
       <meta itemprop="name" content="小鱼的信箱">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/31/post/" class="post-title-link" itemprop="url">关于智能水箱嵌入式软件DAC模块的说明</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          关于智能水箱嵌入式软件DAC模块的说明
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -198,6 +201,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
@@ -208,7 +218,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="关于智能水箱嵌入式软件DAC模块的说明"><a href="#关于智能水箱嵌入式软件DAC模块的说明" class="headerlink" title="关于智能水箱嵌入式软件DAC模块的说明"></a>关于智能水箱嵌入式软件DAC模块的说明</h1><p>作者：薛荣坤</p>
+        <h1 id="关于智能水箱嵌入式软件DAC模块的说明"><a href="#关于智能水箱嵌入式软件DAC模块的说明" class="headerlink" title="关于智能水箱嵌入式软件DAC模块的说明"></a>关于智能水箱嵌入式软件DAC模块的说明</h1><p>作者：薛荣坤</p>
 <h2 id="DAC模块"><a href="#DAC模块" class="headerlink" title="DAC模块"></a>DAC模块</h2><p>DAC模块主要的作用就是用来驱动继电器，来实现对于电机的控制。代码相对简单，CUBEmx图形化设计软件生成代码可用，只用使能DAC，并填入寄存器即可。</p>
 <h3 id="CUBEMX配置"><a href="#CUBEMX配置" class="headerlink" title="CUBEMX配置"></a>CUBEMX配置</h3><ul>
 <li>因为我们在程序中DAC可能控制的就是继电器，所以不需要采用定时器，中断，但是在电子设计大赛中，应当掌握如何使用DAC TIMER DMA输出可变频率的正弦波。</li>
@@ -226,389 +236,61 @@
 <li>在硬件连接中，一定要注意DAC和硬件驱动装置中设计一个用于补充电流的电路（三极管即可），因为DAC很难长时间提供高强度电流，这对于芯片会产生极大的不稳定性。（<em>笔者曾经因为这个问题烧坏了两个STM32F429（高性能32芯片）</em>）</li>
 </ol>
 
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.thedreamfish.cn/2022/03/02/myidea/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="爱做梦的小鱼">
-      <meta itemprop="description" content="世界如此美丽，我们一起欣赏世界">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小鱼的信箱">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/02/myidea/" class="post-title-link" itemprop="url">嵌入式系统分析</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-02 23:53:29" itemprop="dateCreated datePublished" datetime="2022-03-02T23:53:29+08:00">2022-03-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-31 06:47:54" itemprop="dateModified" datetime="2022-03-31T06:47:54+08:00">2022-03-31</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="嵌入式系统中汇编语法详解"><a href="#嵌入式系统中汇编语法详解" class="headerlink" title="嵌入式系统中汇编语法详解"></a>嵌入式系统中汇编语法详解</h1><h2 id="初等应用"><a href="#初等应用" class="headerlink" title="初等应用"></a>初等应用</h2><h3 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h3><p>​        </p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a&lt;b)&#123;x=<span class="number">5</span>;y=c+d;&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;x=c-d;&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ADR r4 ,a;</span><br><span class="line">LDR r0 ,[r4];</span><br><span class="line">ADR r4 ,b;</span><br><span class="line">LDR r1 ,[R4];</span><br><span class="line">CMP r0 ,r1;</span><br><span class="line">BLT fblock;</span><br><span class="line">ADR r4 ,c;</span><br><span class="line"><span class="comment">//若干执行语句(else)</span></span><br><span class="line">B after </span><br><span class="line">fblock ADR ;</span><br><span class="line"><span class="comment">//若干执行语句(if a&lt;b)</span></span><br><span class="line">after</span><br></pre></td></tr></table></figure>
-<p>for循环</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">20</span>;i++)&#123;</span><br><span class="line">  <span class="keyword">for</span> (j=<span class="number">0</span>;j&lt;<span class="number">10</span>;j++)&#123;</span><br><span class="line">    z[i][j]=a[i][j]*b[i];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">MOV r0 ,#0 ;ro-i</span><br><span class="line">ADR r2 ,z;</span><br><span class="line">ADR r3 ,a;</span><br><span class="line">ADR r4 ,b;</span><br><span class="line">MOV r8 ,#0;</span><br><span class="line">MOV r9 ,#0;</span><br><span class="line"></span><br><span class="line">LOOP mov r1,#0; r1=0;</span><br><span class="line">LOOP1 LDR r5 ,[r3,r8];a[i][j]</span><br><span class="line">			LDR r6 ,[r3,r9];b[i]</span><br><span class="line">			MUL r7 ,r5,r6;</span><br><span class="line">			STR r7 ,[r4,r8];</span><br><span class="line">			ADD r1,r1,#1;</span><br><span class="line">			ADD r8,r8,#4;</span><br><span class="line">			CMP r1,#10;</span><br><span class="line">			BLT loop 1</span><br><span class="line">			ADD r9,r9,#4</span><br><span class="line">			ADD r0,r0,#1;</span><br><span class="line">			CMP r0,#20</span><br><span class="line">			BLT loop</span><br><span class="line">loopend</span><br></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">20</span>;i++)&#123;</span><br><span class="line">  <span class="keyword">for</span> (j=<span class="number">0</span>;j&lt;<span class="number">10</span>;j++)&#123;</span><br><span class="line">    z[i][j]=a[i][j]*b[j];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">MOV r0 ,#0 ;ro-i</span><br><span class="line">ADR r2 ,z;</span><br><span class="line">ADR r3 ,a;</span><br><span class="line">ADR r4 ,b;</span><br><span class="line">MOV r8 ,#0;</span><br><span class="line">MOV r9 ,#0;</span><br><span class="line"></span><br><span class="line">LOOP mov r1,#0; r1=0;</span><br><span class="line">MOV r9 ,#0;</span><br><span class="line">LOOP1 LDR r5 ,[r3,r8];a[i][j]</span><br><span class="line">			LDR r6 ,[r3,r9];b[i]</span><br><span class="line">			MUL r7 ,r5,r6;</span><br><span class="line">			STR r7 ,[r4,r8];</span><br><span class="line">			ADD r1,r1,#1;</span><br><span class="line">			ADD r8,r8,#4;</span><br><span class="line">							ADD r9,r9,#4</span><br><span class="line">			CMP r1,#10;</span><br><span class="line">			BLT loop 1</span><br><span class="line">		;	ADD r9,r9,#4</span><br><span class="line">			ADD r0,r0,#1;</span><br><span class="line">			CMP r0,#20</span><br><span class="line">			BLT loop</span><br><span class="line">loopend</span><br></pre></td></tr></table></figure>
-<h2 id="状态机的应用"><a href="#状态机的应用" class="headerlink" title="状态机的应用"></a>状态机的应用</h2><h3 id="Thumb指令集"><a href="#Thumb指令集" class="headerlink" title="Thumb指令集"></a>Thumb指令集</h3><p>Thumb指令集使用16bit指令的再编码子集，比ARM具有更好的代码密度 增加ARM使用16位总线时的系统性能。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/03/02/myidea/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.thedreamfish.cn/2022/01/19/stm32water/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="爱做梦的小鱼">
-      <meta itemprop="description" content="世界如此美丽，我们一起欣赏世界">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小鱼的信箱">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/19/stm32water/" class="post-title-link" itemprop="url">关于智能水箱嵌入式开发软件部分的说明</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-01-19 13:18:11 / 修改时间：21:52:18" itemprop="dateCreated datePublished" datetime="2022-01-19T13:18:11+08:00">2022-01-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="关于智能水箱嵌入式软件ADC模块的说明"><a href="#关于智能水箱嵌入式软件ADC模块的说明" class="headerlink" title="关于智能水箱嵌入式软件ADC模块的说明"></a>关于智能水箱嵌入式软件ADC模块的说明</h1><p>作者：薛荣坤</p>
-<h2 id="12位高精度ADC检测模块"><a href="#12位高精度ADC检测模块" class="headerlink" title="12位高精度ADC检测模块"></a>12位高精度ADC检测模块</h2><p>总体上嵌入式开发，通过STM32F103ZETX和   制作嵌入式系统，实现基于定时器中断下嵌套DMA通道的3个ADC，基于FMC通信下的屏幕显示，基于ESP8266的WIFI模组，基于USART1的串口通信等功能，为后续和硬件的搭配提供基础。</p>
-<p>本文档主要用于说明ADC各个模块的配置方法，为之后产品细节开发提供帮助</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/19/stm32water/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.thedreamfish.cn/2022/01/16/mythird/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="爱做梦的小鱼">
-      <meta itemprop="description" content="世界如此美丽，我们一起欣赏世界">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小鱼的信箱">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/16/mythird/" class="post-title-link" itemprop="url">数字滤波器设计1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-01-16 19:00:40 / 修改时间：19:31:46" itemprop="dateCreated datePublished" datetime="2022-01-16T19:00:40+08:00">2022-01-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="模拟和数字滤波器转换浅谈"><a href="#模拟和数字滤波器转换浅谈" class="headerlink" title="模拟和数字滤波器转换浅谈"></a>模拟和数字滤波器转换浅谈</h1><p>数字处理中，最重要的一步就是有能力将模拟滤波器转为数字滤波器，一般有两种方法，第一种是将模拟滤波器的单位冲激响应h(t)映射成数字滤波器h(n)的单位冲激响应的冲激响应不变法。第二种是将模拟滤波器的系统函数H(S)映射成数字滤波器系统函数H(Z)的双线性变换法。</p>
-<p>本质上，这些映射都是把s平面映射到z平面，而从s到z的映射必须满足基本条件。</p>
-<ul>
-<li>映射前后的频率轴必须相对应，表明s平面的虚轴必须映射到z平面的单位圆上。</li>
-<li>因果稳定的H(s)必须映射成因果稳定的H(z)，这就是要求s平面的左半平面必须映射到s平面的单位圆内。</li>
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>爱做梦的小鱼
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.thedreamfish.cn/2022/03/31/post/" title="关于智能水箱嵌入式软件DAC模块的说明">http://www.thedreamfish.cn/2022/03/31/post/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
 </ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/16/mythird/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
+</div>
 
-    
-    
-    
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+          <div class="post-tags">
+              <a href="/tags/%E6%99%BA%E8%83%BD%E6%B0%B4%E7%AE%B1/" rel="tag"># 智能水箱</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/02/myidea/" rel="prev" title="嵌入式系统分析">
+      <i class="fa fa-chevron-left"></i> 嵌入式系统分析
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.thedreamfish.cn/2022/01/15/mysecond/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="爱做梦的小鱼">
-      <meta itemprop="description" content="世界如此美丽，我们一起欣赏世界">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小鱼的信箱">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/15/mysecond/" class="post-title-link" itemprop="url">嵌入式设计输入输出I/O设备的典型方法与问题-忙等和中断</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-01-15 15:40:28 / 修改时间：15:46:56" itemprop="dateCreated datePublished" datetime="2022-01-15T15:40:28+08:00">2022-01-15</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="经典的输入输出设备"><a href="#经典的输入输出设备" class="headerlink" title="经典的输入输出设备"></a>经典的输入输出设备</h1><p>输入/输出设备通常都有模拟或非电组件。显然我们可以意识到cpu通过读写寄存器与设备的通信，这些设备通常有下面这些寄存器。</p>
-<ul>
-<li>数据寄存器：保存设备待处理或已处理的数据。</li>
-<li>状态寄存器：提供设备运行的各种状态寄存器。</li>
-</ul>
-<p>我们不得不提出：有一些寄存器是只能进行读写操作</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/15/mysecond/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.thedreamfish.cn/2022/01/14/myfist/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="爱做梦的小鱼">
-      <meta itemprop="description" content="世界如此美丽，我们一起欣赏世界">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小鱼的信箱">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/14/myfist/" class="post-title-link" itemprop="url">《海上钢琴家》何以成为人们心中之所爱</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-01-14 22:56:16" itemprop="dateCreated datePublished" datetime="2022-01-14T22:56:16+08:00">2022-01-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-15 16:27:22" itemprop="dateModified" datetime="2022-01-15T16:27:22+08:00">2022-01-15</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>谈论经典<br>&#8195;一部经典的电影所以能够流芳，我想原因更多应该是其内在的情感，如今的电影工业讲究太多的视觉刺激，在光的艺术中带给观众极大的震撼，但一段时间后，再谈论起，更多是无从讲起的茫然。<br>&#8195;所以我独爱老旧的电影，那些从黑白世纪里走来的艺术，极致的干净，没有商业污垢的影子，只有对于光和影本身的致敬。如果技术本身成为电影，那只能说是炫耀，只有当技术成为实现一个目的的方法时，电影本身才会散发出浓郁的香芳。<br></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/14/myfist/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
 
           </div>
           
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81NTIyMy8zMTY5MA=="></div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -676,6 +358,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%99%BA%E8%83%BD%E6%B0%B4%E7%AE%B1%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6DAC%E6%A8%A1%E5%9D%97%E7%9A%84%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">关于智能水箱嵌入式软件DAC模块的说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DAC%E6%A8%A1%E5%9D%97"><span class="nav-number">1.1.</span> <span class="nav-text">DAC模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CUBEMX%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.1.</span> <span class="nav-text">CUBEMX配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%BA%90%E7%A0%81"><span class="nav-number">1.1.2.</span> <span class="nav-text">代码源码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DAC-c"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">DAC.c</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E9%83%A8%E5%88%86"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">需要注意的部分</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E8%BF%9E%E6%8E%A5%E9%83%A8%E5%88%86"><span class="nav-number">1.1.3.</span> <span class="nav-text">硬件连接部分</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -907,62 +590,24 @@ window.addEventListener('pjax:success', () => {
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
 
     </div>
 </body>
