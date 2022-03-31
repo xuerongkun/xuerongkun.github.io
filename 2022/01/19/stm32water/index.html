@@ -34,25 +34,24 @@
 <meta property="og:site_name" content="小鱼的信箱">
 <meta property="og:description" content="关于智能水箱嵌入式软件ADC模块的说明作者：薛荣坤 12位高精度ADC检测模块总体上嵌入式开发，通过STM32F103ZETX和   制作嵌入式系统，实现基于定时器中断下嵌套DMA通道的3个ADC，基于FMC通信下的屏幕显示，基于ESP8266的WIFI模组，基于USART1的串口通信等功能，为后续和硬件的搭配提供基础。 本文档主要用于说明ADC各个模块的配置方法，为之后产品细节开发提供帮助">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119132631465.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119132911923.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119171647740.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119171906385.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119172725216.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119191932844.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119192014751.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119192231707.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119204400931.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119214943265.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119214959132.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119215016871.png">
-<meta property="og:image" content="http://www.thedreamfish.cn/myimages/image-20220119215036440.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5atr0hj20mp0dvjtt.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5fws3ij20rx0b9t9o.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5j4k59j20rs0iqjti.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5nbka1j20sm0g2tay.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5ppw9oj20k20gtmz6.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5x8avrj20jn02q3yx.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5ugp53j20ix07maau.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st62cdv3j20na01dt8o.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st68uwl9j20n80b2aap.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st6c44ezj20od0b5dgi.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st6ghihmj20o20b60te.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st6iaui7j20oe0b4q40.jpg">
 <meta property="article:published_time" content="2022-01-19T05:18:11.000Z">
-<meta property="article:modified_time" content="2022-01-19T13:52:18.000Z">
+<meta property="article:modified_time" content="2022-03-31T01:35:33.428Z">
 <meta property="article:author" content="爱做梦的小鱼">
 <meta property="article:tag" content="智能水箱">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.thedreamfish.cn/myimages/image-20220119132631465.png">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5atr0hj20mp0dvjtt.jpg">
 
 <link rel="canonical" href="http://www.thedreamfish.cn/2022/01/19/stm32water/">
 
@@ -209,10 +208,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-01-19 13:18:11 / 修改时间：21:52:18" itemprop="dateCreated datePublished" datetime="2022-01-19T13:18:11+08:00">2022-01-19</time>
+              <time title="创建时间：2022-01-19 13:18:11" itemprop="dateCreated datePublished" datetime="2022-01-19T13:18:11+08:00">2022-01-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-31 09:35:33" itemprop="dateModified" datetime="2022-03-31T09:35:33+08:00">2022-03-31</time>
+              </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -236,32 +241,32 @@
 <h2 id="12位高精度ADC检测模块"><a href="#12位高精度ADC检测模块" class="headerlink" title="12位高精度ADC检测模块"></a>12位高精度ADC检测模块</h2><p>总体上嵌入式开发，通过STM32F103ZETX和   制作嵌入式系统，实现基于定时器中断下嵌套DMA通道的3个ADC，基于FMC通信下的屏幕显示，基于ESP8266的WIFI模组，基于USART1的串口通信等功能，为后续和硬件的搭配提供基础。</p>
 <p>本文档主要用于说明ADC各个模块的配置方法，为之后产品细节开发提供帮助</p>
 <span id="more"></span>
-<h3 id="ADC实现思路："><a href="#ADC实现思路：" class="headerlink" title="ADC实现思路："></a>ADC实现思路：</h3><p>我们首先需要了解STM32F103系列所拥有的三个高精度ADC，<img src="/myimages/image-20220119132631465.png" alt="image-20220119132631465" style="zoom:67%;"><img src="/myimages/image-20220119132911923.png" alt="image-20220119132911923" style="zoom:67%;"></p>
+<h3 id="ADC实现思路："><a href="#ADC实现思路：" class="headerlink" title="ADC实现思路："></a>ADC实现思路：</h3><p>我们首先需要了解STM32F103系列所拥有的三个高精度ADC，<img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5atr0hj20mp0dvjtt.jpg" alt="image-20220119132911923" style="zoom:67%;"></p>
 <p>显然我们可以看到这里f~adc~工作频率是14MHZ，而系统时钟是72MHZ，显然需要把分频因子设置为6。因为我们后续还希望CPU在处理ADC时执行更多操作，显然不应该使用轮询，由于我们希望由定时器中断触发ADC的采样，然后DMA源源不断的将代码从ADC的寄存器移动到指定数组。</p>
 <hr>
-<h3 id="CUBEMX配置"><a href="#CUBEMX配置" class="headerlink" title="CUBEMX配置"></a>CUBEMX配置</h3><h4 id="ADC1和ADC3的配置"><a href="#ADC1和ADC3的配置" class="headerlink" title="ADC1和ADC3的配置"></a>ADC1和ADC3的配置</h4><h5 id="图形初始化"><a href="#图形初始化" class="headerlink" title="图形初始化"></a>图形初始化</h5><p><img src="/myimages/image-20220119171647740.png" style="zoom:67%;"><img src="/myimages/image-20220119171906385.png" alt="image-20220119171906385" style="zoom:67%;"></p>
+<h3 id="CUBEMX配置"><a href="#CUBEMX配置" class="headerlink" title="CUBEMX配置"></a>CUBEMX配置</h3><h4 id="ADC1和ADC3的配置"><a href="#ADC1和ADC3的配置" class="headerlink" title="ADC1和ADC3的配置"></a>ADC1和ADC3的配置</h4><h5 id="图形初始化"><a href="#图形初始化" class="headerlink" title="图形初始化"></a>图形初始化</h5><p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5fws3ij20rx0b9t9o.jpg" style="zoom:67%;"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5j4k59j20rs0iqjti.jpg" alt="image-20220119171906385" style="zoom:67%;"></p>
 <p>以ADC3的配置举例，（ADC3的通道8，对应PF10)</p>
 <ul>
 <li>在ADC配置中需要修改 External Trigger Convision Source为定时器8触发，Sampling Time修改为7.5Cycles，Continuous Conversion Mode（连续转换）改为ENABLE。</li>
 <li>在DMA配置中，Data Width(数据宽)改为Half World. <em>Mode 改为循环，这至关重要，这使得DMA传送不会停止，笔者一开始默认了NORMAL，DEBug发现每次只传送一次，就结束了</em> ，方向改为Peripheral to Memory</li>
 </ul>
-<h5 id="TIMEer定时器界面"><a href="#TIMEer定时器界面" class="headerlink" title="TIMEer定时器界面"></a>TIMEer定时器界面</h5><p><img src="/myimages/image-20220119172725216.png" alt="image-20220119172725216" style="zoom:67%;"></p>
+<h5 id="TIMEer定时器界面"><a href="#TIMEer定时器界面" class="headerlink" title="TIMEer定时器界面"></a>TIMEer定时器界面</h5><p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5nbka1j20sm0g2tay.jpg" alt="image-20220119172725216" style="zoom:67%;"></p>
 <p>要想实现每0.x秒的精准采样，这一点是必不可少的，因为我们如果只使用DMA技术，ADC将不断以高频率采样，笔者发现这种速度太快且不可控，尤其在实际生产中，我们还需要协调3个ADC的关系，如果3个ADC都在同一个时刻采样，显然是可以很好的解决我们的问题。</p>
 <ul>
 <li>分频系数改为1999，Trigger Event Selection 改为自动更新，每次中断结束后，自己重新开始计数。</li>
 </ul>
 <hr>
-<h4 id="ADC2的配置"><a href="#ADC2的配置" class="headerlink" title="ADC2的配置"></a>ADC2的配置</h4><h5 id="图形化初始化"><a href="#图形化初始化" class="headerlink" title="图形化初始化"></a>图形化初始化</h5><p><img src="/myimages/image-20220119191932844.png" alt="image-20220119191932844" style="zoom:67%;"></p>
+<h4 id="ADC2的配置"><a href="#ADC2的配置" class="headerlink" title="ADC2的配置"></a>ADC2的配置</h4><h5 id="图形化初始化"><a href="#图形化初始化" class="headerlink" title="图形化初始化"></a>图形化初始化</h5><p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5ppw9oj20k20gtmz6.jpg" alt="image-20220119191932844" style="zoom:67%;"></p>
 <p>因为ADC2没有DMA系统，所以我们需要使用单独的Timer3来产生中断，这里我们用一个小技巧。我们如果直接设置ADC2由TIMER3触发，发生很奇怪的现象，始终没有中断写入。不如直接使用软件中断触发，然后写两个中断回调函数来判断，这么做本质原因就是调用HAL库之后，程序员部分失去了底层的控制。</p>
 <ul>
 <li>Continuous Conversion Mode :改为Disabled</li>
 <li>Samping Time (因为没有DMA，我们丧失了快速反应能力，不如直接增加Samping Time) :41.5 Cycles</li>
 </ul>
-<h5 id="Timer定时器界面"><a href="#Timer定时器界面" class="headerlink" title="Timer定时器界面"></a>Timer定时器界面</h5><p><img src="/myimages/image-20220119192014751.png" alt="image-20220119192014751" style="zoom:67%;"><img src="/myimages/image-20220119192231707.png" alt="image-20220119192231707" style="zoom:67%;"></p>
+<h5 id="Timer定时器界面"><a href="#Timer定时器界面" class="headerlink" title="Timer定时器界面"></a>Timer定时器界面</h5><p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5x8avrj20jn02q3yx.jpg" alt="image-20220119192014751" style="zoom:67%;"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st5ugp53j20ix07maau.jpg" alt="image-20220119192231707" style="zoom:67%;"></p>
 <ul>
 <li>TIMER3的初始设置和TIMER8一样</li>
 </ul>
-<h5 id="中断初始化"><a href="#中断初始化" class="headerlink" title="中断初始化"></a>中断初始化</h5><p><img src="/myimages/image-20220119204400931.png" alt="image-20220119204400931"></p>
+<h5 id="中断初始化"><a href="#中断初始化" class="headerlink" title="中断初始化"></a>中断初始化</h5><p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st62cdv3j20na01dt8o.jpg" alt="image-20220119204400931"></p>
 <ul>
 <li><p>中断初始化只需要将值（0，0）赋值给（Preemption Priority, Sub Pority）</p>
 </li>
@@ -278,9 +283,9 @@
 <h5 id="ADC1-2初始化时的说明"><a href="#ADC1-2初始化时的说明" class="headerlink" title="ADC1,2初始化时的说明"></a>ADC1,2初始化时的说明</h5><p>为了使用DMA传输，我们需要在第一句使能DMA时钟，但是注意我们不用HAL库生成的DMA_init,其存在一定的时间逻辑混乱。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">MX_ADC1_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC1_Init 0 */</span></span><br><span class="line">	__HAL_RCC_DMA1_CLK_ENABLE();</span><br><span class="line">  <span class="comment">/* USER CODE END ADC1_Init 0 */</span></span><br><span class="line"></span><br><span class="line">  ADC_ChannelConfTypeDef sConfig = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">  ...</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  <span class="type">void</span> <span class="title function_">MX_ADC3_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC3_Init 0 */</span></span><br><span class="line">	__HAL_RCC_DMA2_CLK_ENABLE();</span><br><span class="line">  <span class="comment">/* USER CODE END ADC3_Init 0 */</span></span><br><span class="line"></span><br><span class="line">  ADC_ChannelConfTypeDef sConfig = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN ADC3_Init 1 */</span></span><br><span class="line">  ...&#125;</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
 <h4 id="MAIN-C-（ADC代码使用部分）"><a href="#MAIN-C-（ADC代码使用部分）" class="headerlink" title="MAIN.C （ADC代码使用部分）"></a>MAIN.C （ADC代码使用部分）</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main函数变量</span></span><br><span class="line"><span class="comment">// ADC1转换的电压值通过DMA方式传到SRAM</span></span><br><span class="line"><span class="comment">//这部分代码，后面将移动到ADC.H</span></span><br><span class="line"><span class="keyword">extern</span> __IO <span class="type">uint16_t</span> ADC_ConvertedValue1;</span><br><span class="line"><span class="keyword">extern</span> __IO <span class="type">uint16_t</span> ADC_ConvertedValue2;</span><br><span class="line"><span class="keyword">extern</span> __IO <span class="type">uint16_t</span> ADC_ConvertedValue3;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 局部变量，用于保存转换计算后的电压值 	 </span></span><br><span class="line"><span class="type">float</span> ADC_Vol; </span><br><span class="line"><span class="type">float</span> ADC_Vol2;</span><br><span class="line"><span class="type">float</span> ADC_Vol3;</span><br><span class="line"></span><br><span class="line"><span class="comment">//时钟出花</span></span><br><span class="line">HAL_ADC_Start_IT(&amp;hadc2);    <span class="comment">//使能hadc2的中断</span></span><br><span class="line">HAL_TIM_Base_Start(&amp;htim3);  <span class="comment">//使能TIM3的时钟</span></span><br><span class="line">HAL_TIM_Base_Start(&amp;htim8);     <span class="comment">//使能TIM8的时钟</span></span><br><span class="line">HAL_TIM_Base_Stop_IT(&amp;htim3);    <span class="comment">//关闭ADC2采样</span></span><br><span class="line">HAL_TIM_Base_Stop_IT(&amp;htim8);	<span class="comment">//关闭ADC3采样</span></span><br><span class="line">HAL_ADC_Start_DMA(&amp;hadc1, (<span class="type">uint32_t</span>*)&amp;ADC_ConvertedValue1, <span class="number">1</span>);</span><br><span class="line">HAL_ADC_Start_DMA(&amp;hadc3, (<span class="type">uint32_t</span>*)&amp;ADC_ConvertedValue3, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">	<span class="comment">// 读取转换的AD值</span></span><br><span class="line">	HAL_TIM_Base_Start_IT(&amp;htim8);   <span class="comment">//打开ADC2采样</span></span><br><span class="line">	HAL_TIM_Base_Start_IT(&amp;htim3);   <span class="comment">//打开ADC1,ADC3采样</span></span><br><span class="line">	ADC_Vol =(<span class="type">float</span>) ADC_ConvertedValue1/<span class="number">4096</span>*(<span class="type">float</span>)<span class="number">3.3</span>;<span class="comment">// 读取转换的AD1值</span></span><br><span class="line">	ADC_Vol2 =(<span class="type">float</span>) ADC_ConvertedValue2/<span class="number">4096</span>*(<span class="type">float</span>)<span class="number">3.3</span>;<span class="comment">// 读取转换的AD2值	</span></span><br><span class="line">	ADC_Vol3 =(<span class="type">float</span>) ADC_ConvertedValue3/<span class="number">4096</span>*(<span class="type">float</span>)<span class="number">3.3</span>;<span class="comment">// 读取转换的AD3值</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\r\n The current AD value = 0x%04X \r\n&quot;</span>, ADC_ConvertedValue2); </span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\r\n The current AD value = %f V \r\n&quot;</span>,ADC_Vol2);   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><h4 id="ADC1"><a href="#ADC1" class="headerlink" title="ADC1"></a>ADC1</h4><p><img src="/myimages/image-20220119214943265.png" alt="image-20220119214943265"></p>
-<h4 id="ADC2"><a href="#ADC2" class="headerlink" title="ADC2"></a>ADC2</h4><p><img src="/myimages/image-20220119214959132.png" alt="image-20220119214959132"></p>
-<h4 id="ADC3"><a href="#ADC3" class="headerlink" title="ADC3"></a>ADC3</h4><p><img src="/myimages/image-20220119215016871.png" alt="image-20220119215016871"></p>
+<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><h4 id="ADC1"><a href="#ADC1" class="headerlink" title="ADC1"></a>ADC1</h4><p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st68uwl9j20n80b2aap.jpg" alt="image-20220119214943265"></p>
+<h4 id="ADC2"><a href="#ADC2" class="headerlink" title="ADC2"></a>ADC2</h4><p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st6c44ezj20od0b5dgi.jpg" alt="image-20220119214959132"></p>
+<h4 id="ADC3"><a href="#ADC3" class="headerlink" title="ADC3"></a>ADC3</h4><p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st6ghihmj20o20b60te.jpg" alt="image-20220119215016871"></p>
 <h4 id="测试结论"><a href="#测试结论" class="headerlink" title="测试结论"></a>测试结论</h4><p>精度12位，均为有效数字，ADC1，2，3均工作正常，精度符合项目要求，但是还需要极限测试。</p>
 <h3 id="硬件说明（ADC1-2-3通用）"><a href="#硬件说明（ADC1-2-3通用）" class="headerlink" title="硬件说明（ADC1,2,3通用）"></a>硬件说明（ADC1,2,3通用）</h3><h4 id="ADC对应端口"><a href="#ADC对应端口" class="headerlink" title="ADC对应端口"></a>ADC对应端口</h4><ul>
 <li>ADC1 -&gt;PA4</li>
@@ -288,7 +293,7 @@
 <li>ADC3-&gt;PF10   </li>
 </ul>
 <h4 id="ADC硬件连接"><a href="#ADC硬件连接" class="headerlink" title="ADC硬件连接"></a>ADC硬件连接</h4><p><em>由于ADC采样只能采集0-3.3v之间的电压，所以需要硬件设计中考虑对传感器的分压，建议采用2个贴片电阻将5V分压至3.3.v,请务必考虑ADC的输入电阻R~AIN~</em></p>
-<p><img src="/myimages/image-20220119215036440.png" alt="image-20220119215036440"></p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h0st6iaui7j20oe0b4q40.jpg" alt="image-20220119215036440"></p>
 <p><em>本嵌入式，均采用T~s~=55.5</em></p>
 
     </div>
