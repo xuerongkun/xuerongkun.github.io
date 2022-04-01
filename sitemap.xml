@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.thedreamfish.cn/2022/04/01/abc/</loc>
+    <loc>http://www.thedreamfish.cn/2022/04/02/nfc1/</loc>
     
     <lastmod>2022-04-01</lastmod>
     
@@ -13,7 +13,16 @@
   <url>
     <loc>http://www.thedreamfish.cn/about/index.html</loc>
     
-    <lastmod>2022-03-31</lastmod>
+    <lastmod>2022-04-01</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.thedreamfish.cn/2022/04/01/abc/</loc>
+    
+    <lastmod>2022-04-01</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -191,6 +200,13 @@
   
   <url>
     <loc>http://www.thedreamfish.cn/tags/%E5%AE%9E%E9%AA%8C/</loc>
+    <lastmod>2022-04-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.thedreamfish.cn/tags/%E6%95%99%E7%A8%8B-NFC/</loc>
     <lastmod>2022-04-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
